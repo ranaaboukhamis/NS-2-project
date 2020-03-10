@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #Create required directories and set permissions
-mkdir mobility_files
+#mkdir mobility_files
 mkdir -p Output/nam
 mkdir -p Output/trace
 mkdir -p Output/Results
-chmod 777 -R mobility_files
+#chmod 777 -R mobility_files
 
 #Create required variables to store the parameter values.
 send=0
@@ -28,7 +28,7 @@ avg_nro=0
 avg_co=0
 avg_dl=0
 avg_jitter=0
-count=10
+count=2
 i=0
 #Create header of CSV file.
 echo ""| awk 'BEGIN{printf "Simulation_Number,No_of_Packets_Sent,No_of_Packets_Received,Packet_Delivery_Ratio,Packet_Dropping_Ratio,Throughput,Normalized_Routing_Overhead,Control_Overhead,Delay,Jitter"}'>Output/Results/Final_Result.csv
@@ -37,18 +37,18 @@ echo ""| awk 'BEGIN{printf "Simulation_Number,No_of_Packets_Sent,No_of_Packets_R
 while : ; do
 	((i++))
 		#Creates 10 mobility files. Each of which is named as mob1, mob2, ... , mob10.
-		./setdest -v 2 -n 10 -m 1 -M 10 -t 100 -p 5 -x 800 -y 800 > mobility_files/mob$i		
+		#./setdest -v 2 -n 10 -m 1 -M 10 -t 100 -p 5 -x 800 -y 800 > mobility_files/mob$i		
 
 		#Call TCL script with mobility file as a parameter.
-		ns aodv.tcl mobility_files/mob$i
+		ns main_Mar8.tcl 
 
 		#Call analysis file and redirect the parameter values to file Result.txt
 		printf "########## Simulation number $i ##########\n\n" >> Result.txt		
-		awk -f analysis.awk out_$i.tr >> Result.txt
+		awk -f analysis-4-wireless2.awk out_$i.tr >> Result.txt
 		printf "\n\n" >> Result.txt		
 
 		#Call analysis file and redirect the parameter values to file tmp_result.
-		awk -f analysis.awk out_$i.tr > tmp_result
+		awk -f analysis-4-wireless2.awk out_$i.tr > tmp_result
 
 		#Extract the parameter value from the file tmp_result and redirect it to the temporary file 1.txt.
 		grep "No_of_Packets_Sent:" tmp_result |  awk 'BEGIN{}{print $2;}' > 1.txt

@@ -26,6 +26,8 @@ BEGIN {
 	rcv_agent=0;
 	snd_agent=0;
 	rTime=0;
+	jitter=0;
+	jitter_count=0;
 	for (i=0; i<max_node; i++) {
 		node_thr[i] = 0;		
 	}
@@ -70,22 +72,38 @@ if ( $5 != "---" ) {
 				rStartTime=rTime;
 			if(rTime>rEndTime) 
 				rEndTime=rTime;	
-			if ( strEvent == "+" && pkt_size >= 512) {
+			if ( strEvent == "+") {
 				
-				source = int(from_node)
-				potential_source = int(src_addr)
-				if(source == potential_source) {
+				
 					nSentPackets += 1 ;	
 					rSentTime[ pkt_id ] = rTime ;
 					send_flag[pkt_id] = 1;
-				}
+				
 				
 				
 				
 			}
 			potential_dest = int(to_node)
 			dest = int(dest_addr) 
-			if ( strEvent == "r" && potential_dest == dest && pkt_size >= 512) {
+
+			
+
+
+			if ( strEvent == "r" && pkt_size >= 512) {
+				
+				if( nReceivedPackets == 0 )
+				{
+					rTime = $2;
+				}
+
+
+				else
+				{
+					jitter += $2 - rTime;
+					jitter_count++;
+					rTime = $2
+				}
+
 				nReceivedPackets += 1 ;		
 				nReceivedBytes += pkt_size;
 				potential_source = int(src_addr)
@@ -105,9 +123,14 @@ if ( $5 != "---" ) {
 			if(strEvent == "d" ){
 				#printf("Packet Dropped\n");
 				
-				#nDropPackets += 1;
+			#	nDropPackets += 1;
 			}
-		}		
+		}
+		else	
+		{
+			if(strEvent == "d")
+			#	nDropPackets += 1;
+		}	
 
 
 
@@ -135,28 +158,18 @@ END {
 	}
 
 
-printf("Sart Time:\t\t%15.2f\n",rStartTime)
-printf("End Time:\t\t%15.2f\n",rEndTime)
+#printf("Sart Time:\t\t%15.2f\n",rStartTime)
+#printf("End Time:\t\t%15.2f\n",rEndTime)
 printf("Simulation Time:     \t\t%15.2f\n",rTime)
-printf("No of Packets_Sent: \t\t%15.2f\n",nSentPackets);
-printf("No of Packets Recieved:\t\t%15.2f\n",nReceivedPackets); 
+printf("No_of_Packets_Sent: \t\t%15.2f\n",nSentPackets);
+printf("No_of_Packets_Recieved:\t\t%15.2f\n",nReceivedPackets); 
 printf("No of Dropped Packet:\t\t%15.2f\n",nDropPackets); 
 printf("Packet_Delivery_Ratio: \t\t%15.2f %%\n",rPacketDeliveryRatio);
 printf("Packet_Dropping_Ratio: \t\t%15.2f %%\n",rPacketDropRatio);
-printf("Throughput:   \t\t\t%.2f [Kbps]\n",rThroughput);
-printf("Average Delay: \t\t%15.2f Seconds\n",rAverageDelay);
-#printf("Jitter:    \t\t%15.2f\n",jitter/jitter_count);
-#printf("Normalized_Routing_Overhead:    \t%.2f %%\n",rtr/nReceivedPackets);
-#printf("Control overhead:       \t\t%d\n",rtr);
-#printf("No of Packet forwarded by router: \t\t%d\n",frd_rtr);
-#printf("No of Packet received by router: \t\t%d\n",rcv_rtr);
-#printf("No of Packet sent by router: \t\t%d\n",snd_rtr);
-#printf("No of Packet dropped by router:\t\t%d\n",drop_rtr);
-#printf("No of Packet forwarded by Agent:\t\t%d\n",frd_agent);
-#printf("No of Packet received by Agent:\t\t%d\n",rcv_agent);
-#printf("No of Packet sent by Agent:   \t\t%d\n",snd_agent);
-#printf("No of Packet dropped by Agent:  \t\t%d\n",drop_agent);
-		
+printf("Throughput:   \t\t\t\t%.2f [Mbps]\n",rThroughput/1024);
+printf("Delay: \t\t\t\t%15.2f Seconds\n",rAverageDelay);
+printf("Jitter: \t\t\t\t%.2f\n",jitter/jitter_count);
+
 
 
 

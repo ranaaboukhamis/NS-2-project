@@ -37,7 +37,7 @@ BEGIN {
 	#If event is "send" and trace level is RTR(routing packet) and packet type should not be cbr and udp and ack then increment rtr by 1 and so on.
 	#Final value of rtr will be the total number of routing packets sent.
 
-	if (( $1 == "s" || $1 == "f" )  && $4 == "RTR" )
+	if (( $1 == "s" || $1 == "f" )  && $4 == "RTR" && $7 == "message" )
 	{	
 		rtr++;
 	}
