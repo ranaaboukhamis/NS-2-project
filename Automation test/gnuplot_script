@@ -1,0 +1,47 @@
+set style data linespoints
+set datafile separator ","
+set border 15
+set xtics nomirror
+set ytics nomirror
+set key
+set term pngcairo enhanced size 800,500
+set style line 1 lt 2 lc rgb "blueviolet" lw 3
+set linetype 1 lc rgb "blueviolet" lw 2.5  pt 1
+set xlabel "Simulation number"
+
+set ylabel "No. of Packets Sent"
+set output "Output/Results/No_of_Packets_Sent.png"
+plot 'Output/Results/Final_Result.csv' using 1:2  title "wired-wireless Performance" with linespoints;
+
+set ylabel "No. of Packets Received"
+set output "Output/Results/No_of_Packets_Received.png"
+plot 'Output/Results/Final_Result.csv' using 1:3  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Packet Delivery Ratio(in %)"
+set output "Output/Results/Packet_Delivery_Ratio.png"
+plot 'Output/Results/Final_Result.csv' using 1:4  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Packet Dropping Ratio(in %)"
+set output "Output/Results/Packet_Dropping_Ratio.png"
+plot 'Output/Results/Final_Result.csv' using 1:5  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Throughput (in Kbps)"
+set output "Output/Results/Throughput.png"
+plot 'Output/Results/Final_Result.csv' using 1:6  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Normalized Routing Overhead(in %)"
+set output "Output/Results/Normalized_Routing_Overhead.png"
+plot 'Output/Results/Final_Result.csv' using 1:7  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Control Overhead"
+set output "Output/Results/Control_Overhead.png"
+plot 'Output/Results/Final_Result.csv' using 1:8  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Delay (in seconds)"
+set output "Output/Results/Delay.png"
+plot 'Output/Results/Final_Result.csv' using 1:9  title "wired-wireless Performance" with linespoints;
+
+set ylabel "Jitter (in seconds)"
+set output "Output/Results/Jitter.png"
+plot 'Output/Results/Final_Result.csv' using 1:10  title "wired-wireless Performance" with linespoints;
+
