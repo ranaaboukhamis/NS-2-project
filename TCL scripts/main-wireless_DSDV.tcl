@@ -3,6 +3,7 @@
 
 
 global opt
+
 set opt(chan)       Channel/WirelessChannel
 set opt(prop)       Propagation/TwoRayGround
 set opt(netif)      Phy/WirelessPhy
