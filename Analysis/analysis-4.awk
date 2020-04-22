@@ -6,6 +6,7 @@ BEGIN {
 	rTotalDelay = 0.0 ;
 	max_pckt = 10000;
 	
+	
 	idHighestPacket = 0;
 	idLowestPacket = 100000;
 	rStartTime = 10000.0;
